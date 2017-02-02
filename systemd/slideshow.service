@@ -1,5 +1,5 @@
 [Unit]
-Description=Maui Makers Slideshow service
+Description=Slideshow service
 Requires=watchdog.service
 After=multi-user.target watchdog.service
 

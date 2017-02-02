@@ -9,3 +9,10 @@ Auto-booting slideshow for Raspberry Pi showing both still images and videos.
 - Can be shutdown using a switch connected to GPIO pins (see watchdog.py)
 - Can be shutdown remotely using ssh, then "sudo systemctl stop slideshow"
 
+Notes
+
+There is a delay after boot, before the slideshow starts.  This is
+meant to allow USB drives that are already plugged in to be properly 
+mounted by the kernel.
+
+To adjust this delay, edit slideshow.sh and modify the "sleep 8" line.
