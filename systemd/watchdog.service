@@ -1,0 +1,11 @@
+[Unit]
+Description=Maui Makers watchdog service
+After=basic.target
+
+[Service]
+Type=simple
+ExecStart=/home/pi/rpi_slideshow/watchdog.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

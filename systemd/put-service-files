@@ -1,0 +1,11 @@
+
+# Get service files from install location
+sudo cp watchdog.service /lib/systemd/system/watchdog.service 
+sudo cp slideshow.service /lib/systemd/system/slideshow.service 
+cd /lib/systemd/system
+sudo chown root:root watchdog.service
+sudo chown root:root slideshow.service
+
+echo "sudo systemctl daemon-reload"
+sudo systemctl daemon-reload
+

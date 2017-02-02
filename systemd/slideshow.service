@@ -1,0 +1,12 @@
+[Unit]
+Description=Maui Makers Slideshow service
+Requires=watchdog.service
+After=multi-user.target watchdog.service
+
+[Service]
+Type=simple
+ExecStart=/home/pi/rpi_slideshow/slideshow.sh
+#Restart=always
+
+[Install]
+WantedBy=multi-user.target

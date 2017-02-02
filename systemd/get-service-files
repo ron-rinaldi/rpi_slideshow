@@ -1,0 +1,6 @@
+
+# Get service files from install location
+sudo cp /lib/systemd/system/watchdog.service .
+sudo cp /lib/systemd/system/slideshow.service .
+sudo chown pi:pi *.service
+

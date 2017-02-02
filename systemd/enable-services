@@ -1,0 +1,5 @@
+# Enable services via systemd
+
+sudo systemctl enable watchdog
+sudo systemctl enable slideshow
+
