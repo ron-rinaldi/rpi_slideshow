@@ -11,8 +11,11 @@ Auto-booting slideshow for Raspberry Pi showing both still images and videos.
 
 Notes
 
+Various scripts and systemd service files assume the code is located at
+    /home/pi/rpi_slideshow
+If you locate the files elsewhere, you may need to adjust the scripts.
+
 There is a delay after boot, before the slideshow starts.  This is
 meant to allow USB drives that are already plugged in to be properly 
-mounted by the kernel.
-
-To adjust this delay, edit slideshow.sh and modify the "sleep 8" line.
+mounted by the kernel.  To adjust this delay, edit slideshow.sh and 
+modify the "sleep 8" line.
