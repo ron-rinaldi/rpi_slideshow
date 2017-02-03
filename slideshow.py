@@ -29,7 +29,7 @@ def sleep( delay):
     events = pygame.event.get()
     for event in events:
         if event.type == pygame.KEYDOWN:
-            close_down()
+            close_down(-3)
 
 
 def readconfig( config_path):
@@ -44,6 +44,12 @@ def readconfig( config_path):
     delay    = parser.get('slideshow','delay')
     if isnumber(delay): config['delay'] = float(delay)
     else:               config['delay'] = 5.0
+    
+    retry = parser.get('slideshow','retry')
+    if isnumber(retry): config['retry'] = int(retry)
+    else:               config['retry'] = 8
+
+    config['banner'] = parser.get('slideshow','banner')
 
     all_extensions = []
 
@@ -150,13 +156,23 @@ def play( filename, config, screen):
             return
     
 
-def pygameinit():
+def pygame_init():
     pygame.display.init()
+    pygame.font.init()
+    pygame.mouse.set_visible(False)
     info = pygame.display.Info()
     size = (info.current_w, info.current_h) 
     screen = pygame.display.set_mode( size, pygame.FULLSCREEN)
-    pygame.mouse.set_visible(False)
     return screen
+
+def pygame_msg( screen, msg):
+    # Static variable to this function
+    pygame_msg.y = getattr( pygame_msg, 'y', 50) + 50 
+    font = pygame.font.Font( None, 50)
+    label = font.render( msg, True, (255,255,255), (0,0,0) )
+    x = 0
+    screen.blit( label, (x, pygame_msg.y))
+    pygame.display.update() 
 
 
 def blankscreen( screen):
@@ -164,30 +180,59 @@ def blankscreen( screen):
     pygame.display.update()
 
 
-def close_down():
+def close_down( exitcode):
     #print 'close_down'
-    sys.exit(0)
+    pygame.quit()
+    sys.exit( exitcode)
 
 # ----------------------------------------------------------------------------
 # Begin main program
 
 if len(sys.argv) <= 1:
     print "No config file specified"
-    close_down()
+    close_down(-1)
 
 else:
     config_path = sys.argv[1]
     config = readconfig( config_path)
     #print config
 
-    filelist = getfiles( config)
+    banner = config['banner']
+
+    screen = pygame_init()
+    blankscreen( screen)
+    pygame_msg( screen, banner)
+    sleep(0.5)
+    pygame_msg( screen, "Scanning file files on " + config['filepath'])
+    sleep(1)
+
+    getfilescount = 0;
+
+    while getfilescount < 10:
+        getfilescount += 1
+
+        # Scan for files to display
+        filelist = getfiles( config)
+        
+        if len(filelist) == 0:
+            # No files found.
+            if getfilescount == int(config['retry']): 
+                pygame_msg( screen, "Terminating...");
+                sleep(2)
+                close_down(-2)
+
+            msg = 'No files found at '  + \
+                  config['filepath'] + '     Waiting...'
+            pygame_msg( screen, msg);
+            sleep(6)
+
+        else: break
+    
+    pygame_msg( screen, "Found " + str(len(filelist)) + " files.")
+    sleep(1)
+    blankscreen( screen)
+
     filelist.sort()
-
-    if len(filelist) == 0:
-        print 'No files found at:', config['filepath']
-        close_down()
-
-    screen = pygameinit()
 
     while True:
         for filename in filelist:

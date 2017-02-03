@@ -4,7 +4,10 @@
 #
 # Time so that xterm is up and flash 
 # drives are mounted
-sleep 8
+# Successful values: 
+#    sleep 8   on a Pi-3
+#    sleep 32  on a Pi-zero
+#sleep 32
 
 # Make sure screensaver is off
 xset s off
